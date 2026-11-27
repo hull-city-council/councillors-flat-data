@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Set up Deno
         uses: denoland/setup-deno@main
@@ -31,6 +33,7 @@ jobs:
           http_url: ${{ secrets.APIFY_ENDPOINT }}
           mask: true
           downloaded_filename: councillors.json
+
 
       - name: Download councillor images
         run: >
@@ -53,4 +56,5 @@ jobs:
 
           git add councillors.json images/
           git commit -m "Update councillor images"
+          git pull --rebase origin "${{ github.ref_name }}"
           git push
